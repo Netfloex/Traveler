@@ -1,9 +1,9 @@
-import type { DefaultSeoProps } from "next-seo";
+import type { NextSeoProps } from "next-seo";
 
-const SEO: DefaultSeoProps = {
-	titleTemplate: "%s | Template",
-	defaultTitle: "Template",
-	description: "Template"
+const SEO: NextSeoProps = {
+	titleTemplate: "%s | Traveler",
+	defaultTitle: "Traveler",
+	description: "Improved GUI for Dutch travel advice:"
 };
 
 export default SEO;

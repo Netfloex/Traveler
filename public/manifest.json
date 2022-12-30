@@ -1,0 +1,17 @@
+{
+	"name": "Traveler",
+	"short_name": "Traveler",
+	"icons": [
+		{
+			"src": "/commute-bg.svg",
+			"sizes": "any",
+			"purpose": "maskable",
+			"type": "image/svg+xml"
+		}
+	],
+	"theme_color": "#121212",
+	"background_color": "#121212",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "portrait"
+}

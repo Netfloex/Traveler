@@ -3,11 +3,11 @@ import SEO from "@seo-default";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
-const Page: FC = () => (
+const Planner: FC = () => (
 	<>
-		<NextSeo title="Hello" useAppDir {...SEO} />
+		<NextSeo title="Planner" useAppDir {...SEO} />
 		<span>Hello World</span>
 	</>
 );
 
-export default Page;
+export default Planner;
