@@ -2,13 +2,26 @@ import "@styles/global.scss";
 
 import { FCC } from "@typings/FCC";
 
+import { InitColorSchemeScript } from "@client/InitColorSchemeScript";
+import { CssVarsProvider } from "@client/joy";
+import { CssBaseline } from "@client/joy";
+
 const RootLayout: FCC = ({ children }) => (
 	<html lang="en">
 		<head>
 			<meta charSet="utf-8" />
-			<meta name="viewport" content="width=device-width" />
+			<meta
+				name="viewport"
+				content="initial-scale=1, width=device-width"
+			/>
 		</head>
-		<body>{children}</body>
+		<body>
+			<CssVarsProvider defaultMode="system">
+				<InitColorSchemeScript />
+				<CssBaseline />
+				{children}
+			</CssVarsProvider>
+		</body>
 	</html>
 );
 

@@ -8,10 +8,12 @@
 	"arrowParens": "always",
 	"importOrderSeparation": true,
 	"importOrder": [
-		".*scss$",
+		".*scss",
 		"^\\w+",
 		"^@hooks$",
 		"^(@lib)|(@utils)|(@server)$",
-		"^@typings/.*"
+		"^@typings/.*",
+		"^@client/.*",
+		"^@seo-default$"
 	]
 }
