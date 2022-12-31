@@ -1,5 +1,16 @@
 "use client";
 
+import {
+	FC,
+	Fragment,
+	ReactNode,
+	SyntheticEvent,
+	useCallback,
+	useState
+} from "react";
+import { MdSearch } from "react-icons/md";
+
+import { SvgIcon } from "@mui/joy";
 import Autocomplete, {
 	AutocompleteInputChangeReason,
 	createFilterOptions
@@ -12,14 +23,7 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import Typography from "@mui/joy/Typography";
 
-import {
-	FC,
-	Fragment,
-	ReactNode,
-	SyntheticEvent,
-	useCallback,
-	useState
-} from "react";
+import { TypeToIcon } from "./TypeToIcon";
 
 import { search } from "@endpoints/search";
 import { LocationUnion } from "@endpoints/search/SearchResultSchema";
@@ -30,9 +34,14 @@ type OnChange = (
 	reason: AutocompleteInputChangeReason
 ) => void;
 
-export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
+export const LocationAutocomplete: FC<{
+	label: string;
+	placeholder: string;
+}> = ({ label, placeholder }) => {
 	const [locations, setLocations] = useState<LocationUnion[]>([]);
 	const [loading, setLoading] = useState(false);
+
+	const [selected, select] = useState<false | LocationUnion>(false);
 
 	const onInputChange: OnChange = useCallback((_, value) => {
 		setLoading(true);
@@ -47,21 +56,37 @@ export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
 			<FormLabel>{label}</FormLabel>
 			<Autocomplete
 				autoHighlight
-				// autoSelect
 				noOptionsText={loading ? "Loading..." : undefined}
 				onInputChange={onInputChange}
 				openOnFocus
 				options={locations}
-				placeholder="Address, station"
+				placeholder={placeholder}
 				variant="soft"
-				getOptionLabel={(opt): string =>
-					opt.name + ", " + ("city" in opt ? opt.city : opt.country)
-				}
+				onChange={(_, value): void => {
+					select(value ?? false);
+				}}
+				getOptionLabel={(opt): string => {
+					const addition = "city" in opt ? opt.city : opt.country;
+
+					return (
+						opt.name +
+						(!addition || opt.name.match(addition)
+							? ""
+							: `, ${addition}`)
+					);
+				}}
 				filterOptions={createFilterOptions({
 					stringify(option) {
 						return JSON.stringify(option);
 					}
 				})}
+				startDecorator={
+					selected ? (
+						<TypeToIcon type={selected.type} />
+					) : (
+						<SvgIcon component={MdSearch} />
+					)
+				}
 				endDecorator={
 					loading ? (
 						<CircularProgress
@@ -77,7 +102,9 @@ export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
 					<Fragment key={option.id}>
 						{delete (props as typeof props & { key?: string }).key}
 						<AutocompleteOption {...props}>
-							<ListItemDecorator>AA</ListItemDecorator>
+							<ListItemDecorator>
+								<TypeToIcon type={option.type} />
+							</ListItemDecorator>
 							<ListItemContent sx={{ fontSize: "sm" }}>
 								{option.name}
 								<Typography level="body3">

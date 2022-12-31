@@ -7,7 +7,7 @@ import { FCC } from "@typings/FCC";
 
 const RootLayout: FCC = ({ children }) => {
 	return (
-		<html lang="en">
+		<html lang="en" data-joy-color-scheme="dark">
 			<head>
 				<meta charSet="utf-8" />
 				<meta

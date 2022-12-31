@@ -10,16 +10,41 @@ const GenericLocation = z.object({
 	location: GPSLocation
 });
 
+const TransitLocationType = z.enum([
+	"busStation",
+	"railStation",
+	"onstreetBus",
+	"onstreetTram",
+	"metroStation",
+	"ferryPort",
+	"tramStation",
+	"combiTramBus"
+]);
 const TransitLocation = GenericLocation.extend({
 	stopid: z.string(),
-	type: z.string(),
+	type: TransitLocationType,
 	city: z.string()
 });
 
+const GeneralLocationType = z.enum([
+	"place",
+	"landuse",
+	"highway",
+	"natural",
+	"amenity",
+	"shop",
+	"building",
+	"leisure",
+	"office",
+	"tourism",
+	"man_made",
+	"historic",
+	"other"
+]);
 const GeneralLocation = GenericLocation.extend({
 	country: z.string(),
 	detailedType: z.string().optional(),
-	type: z.string(),
+	type: GeneralLocationType,
 	city: z.string().optional()
 });
 
@@ -51,3 +76,6 @@ export type SearchResult = z.output<typeof SearchResultSchema>;
 export type GeneralLocation = Required<SearchResult>["general"][0];
 export type TransitLocation = Required<SearchResult>["transit"][0];
 export type LocationUnion = TransitLocation | GeneralLocation;
+
+export type GeneralLocationType = z.output<typeof GeneralLocationType>;
+export type TransitLocationType = z.output<typeof TransitLocationType>;

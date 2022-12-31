@@ -15,8 +15,8 @@ const Planner: NextPage = () => (
 		<Card variant="outlined" className={styles.wrapper}>
 			<Typography level="h3">Plan your trip</Typography>
 			<div className={styles.textFieldsWrapper}>
-				<LocationAutocomplete label="From" />
-				<LocationAutocomplete label="To" />
+				<LocationAutocomplete label="From" placeholder="Departure" />
+				<LocationAutocomplete label="To" placeholder="Destination" />
 			</div>
 		</Card>
 	</>
