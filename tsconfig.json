@@ -5,6 +5,7 @@
 			"@typings/*": ["src/typings/*"],
 			"@styles/*": ["src/styles/*"],
 			"@client/*": ["src/client/*"],
+			"@utils/*": ["src/utils/*"],
 			"@endpoints/*": ["src/endpoints/*"],
 			"@seo-default": ["src/next-seo.config"]
 		},

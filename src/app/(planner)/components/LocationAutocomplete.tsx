@@ -1,14 +1,17 @@
 "use client";
 
 import {
+	Dispatch,
 	FC,
 	Fragment,
 	ReactNode,
+	SetStateAction,
 	SyntheticEvent,
 	useCallback,
 	useState
 } from "react";
 import { MdSearch } from "react-icons/md";
+import { locationToString } from "src/utils/locationToString";
 
 import { SvgIcon } from "@mui/joy";
 import Autocomplete, {
@@ -37,11 +40,11 @@ type OnChange = (
 export const LocationAutocomplete: FC<{
 	label: string;
 	placeholder: string;
-}> = ({ label, placeholder }) => {
+	selected: false | LocationUnion;
+	setSelected: Dispatch<SetStateAction<false | LocationUnion>>;
+}> = ({ label, placeholder, selected, setSelected }) => {
 	const [locations, setLocations] = useState<LocationUnion[]>([]);
 	const [loading, setLoading] = useState(false);
-
-	const [selected, select] = useState<false | LocationUnion>(false);
 
 	const onInputChange: OnChange = useCallback((_, value) => {
 		setLoading(true);
@@ -63,18 +66,9 @@ export const LocationAutocomplete: FC<{
 				placeholder={placeholder}
 				variant="soft"
 				onChange={(_, value): void => {
-					select(value ?? false);
+					setSelected(value ?? false);
 				}}
-				getOptionLabel={(opt): string => {
-					const addition = "city" in opt ? opt.city : opt.country;
-
-					return (
-						opt.name +
-						(!addition || opt.name.match(addition)
-							? ""
-							: `, ${addition}`)
-					);
-				}}
+				getOptionLabel={locationToString}
 				filterOptions={createFilterOptions({
 					stringify(option) {
 						return JSON.stringify(option);
@@ -89,10 +83,7 @@ export const LocationAutocomplete: FC<{
 				}
 				endDecorator={
 					loading ? (
-						<CircularProgress
-							size="sm"
-							sx={{ bgcolor: "background.surface" }}
-						/>
+						<CircularProgress size="sm" variant="soft" />
 					) : null
 				}
 				isOptionEqualToValue={(opt, value): boolean =>
