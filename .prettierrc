@@ -13,8 +13,9 @@
 		"^@hooks$",
 		"^(@lib)|(@utils)|(@server)$",
 		"^(@|\\./)components/*",
-		"^@typings/.*",
 		"^@client/.*",
+		"^@endpoints/.*",
+		"^@typings/.*",
 		"^@seo-default$"
 	]
 }

@@ -1,5 +1,7 @@
 "use client";
 
-export * from "@mui/joy";
-
 export { CssVarsProvider } from "@mui/joy/styles";
+export { default as CssBaseline } from "@mui/joy/CssBaseline";
+
+export { default as Card } from "@mui/joy/Card";
+export { default as Typography } from "@mui/joy/Typography";

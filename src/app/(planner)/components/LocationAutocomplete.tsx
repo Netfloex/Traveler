@@ -1,45 +1,45 @@
 "use client";
 
-import {
-	CircularProgress,
-	FormControl,
-	FormLabel,
-	ListItemContent,
-	ListItemDecorator,
-	Typography
-} from "@mui/joy";
-import Autocomplete, { AutocompleteChangeReason } from "@mui/joy/Autocomplete";
+import Autocomplete, {
+	AutocompleteInputChangeReason,
+	createFilterOptions
+} from "@mui/joy/Autocomplete";
 import AutocompleteOption from "@mui/joy/AutocompleteOption";
+import CircularProgress from "@mui/joy/CircularProgress";
+import FormControl from "@mui/joy/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import ListItemContent from "@mui/joy/ListItemContent";
+import ListItemDecorator from "@mui/joy/ListItemDecorator";
+import Typography from "@mui/joy/Typography";
 
-import { FC, Fragment, ReactNode, SyntheticEvent, useCallback } from "react";
+import {
+	FC,
+	Fragment,
+	ReactNode,
+	SyntheticEvent,
+	useCallback,
+	useState
+} from "react";
 
-interface Location {
-	label: string;
-	id: number;
-}
+import { search } from "@endpoints/search";
+import { LocationUnion } from "@endpoints/search/SearchResultSchema";
 
 type OnChange = (
 	event: SyntheticEvent<Element, Event>,
-	value: Location | null,
-	reason: AutocompleteChangeReason
+	value: string,
+	reason: AutocompleteInputChangeReason
 ) => void;
 
-const locations = [
-	{
-		label: "Amsterdam",
-		id: 0
-	},
-	{
-		label: "Rotterdam",
-		id: 1
-	}
-];
-
 export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
-	const loading = !locations.length;
+	const [locations, setLocations] = useState<LocationUnion[]>([]);
+	const [loading, setLoading] = useState(false);
 
-	const onChange: OnChange = useCallback((_, value) => {
-		console.log(value);
+	const onInputChange: OnChange = useCallback((_, value) => {
+		setLoading(true);
+		search(value).then((data) => {
+			setLocations([...(data?.transit ?? []), ...(data?.general ?? [])]);
+			setLoading(false);
+		});
 	}, []);
 
 	return (
@@ -47,13 +47,21 @@ export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
 			<FormLabel>{label}</FormLabel>
 			<Autocomplete
 				autoHighlight
-				autoSelect
-				loading={loading}
-				onChange={onChange}
+				// autoSelect
+				noOptionsText={loading ? "Loading..." : undefined}
+				onInputChange={onInputChange}
 				openOnFocus
 				options={locations}
 				placeholder="Address, station"
 				variant="soft"
+				getOptionLabel={(opt): string =>
+					opt.name + ", " + ("city" in opt ? opt.city : opt.country)
+				}
+				filterOptions={createFilterOptions({
+					stringify(option) {
+						return JSON.stringify(option);
+					}
+				})}
 				endDecorator={
 					loading ? (
 						<CircularProgress
@@ -71,9 +79,11 @@ export const LocationAutocomplete: FC<{ label: string }> = ({ label }) => {
 						<AutocompleteOption {...props}>
 							<ListItemDecorator>AA</ListItemDecorator>
 							<ListItemContent sx={{ fontSize: "sm" }}>
-								{option.label}
+								{option.name}
 								<Typography level="body3">
-									{option.label}
+									{"city" in option
+										? option.city
+										: option.country}
 								</Typography>
 							</ListItemContent>
 						</AutocompleteOption>
