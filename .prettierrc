@@ -12,6 +12,7 @@
 		"^\\w+",
 		"^@hooks$",
 		"^(@lib)|(@utils)|(@server)$",
+		"^(@|\\./)components/*",
 		"^@typings/.*",
 		"^@client/.*",
 		"^@seo-default$"

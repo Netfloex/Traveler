@@ -3,8 +3,7 @@ import "@styles/global.scss";
 import { FCC } from "@typings/FCC";
 
 import { InitColorSchemeScript } from "@client/InitColorSchemeScript";
-import { CssVarsProvider } from "@client/joy";
-import { CssBaseline } from "@client/joy";
+import { CssBaseline, CssVarsProvider } from "@client/joy";
 
 const RootLayout: FCC = ({ children }) => (
 	<html lang="en">

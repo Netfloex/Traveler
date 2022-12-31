@@ -17,7 +17,8 @@ const config = {
 	output: "standalone",
 	experimental: {
 		appDir: true
-	}
+	},
+	reactStrictMode: true
 };
 
 module.exports = nextPwa({
