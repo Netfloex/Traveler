@@ -2,9 +2,8 @@
 
 import styles from "./Planner.module.scss";
 
-import { NextPage } from "next";
 import { NextSeo } from "next-seo";
-import { useState } from "react";
+import { useState, FC } from "react";
 import { MdArrowForward } from "react-icons/md";
 
 import SvgIcon from "@mui/joy/SvgIcon";
@@ -20,7 +19,7 @@ import { LocationUnion } from "@endpoints/search/SearchResultSchema";
 
 import SEO from "@seo-default";
 
-const Planner: NextPage = () => {
+const Planner: FC = () => {
 	const [departure, setDeparture] = useState<LocationUnion | false>(false);
 	const [destination, setDestination] = useState<LocationUnion | false>(
 		false
