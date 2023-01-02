@@ -21,7 +21,7 @@ export const search = async (query: string): Promise<SearchResult> => {
 		return parsed.data;
 	}
 
-	console.log("Error validating search response, query : " + query);
+	console.error("Error validating search response, query : " + query);
 
 	throw parsed.error;
 };
