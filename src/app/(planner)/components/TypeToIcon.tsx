@@ -31,31 +31,28 @@ const typeToIconMap: Record<
 	GeneralLocationType | TransitLocationType,
 	IconType
 > = {
-	busStation: MdDirectionsBus,
-	onstreetBus: MdDirectionsBus,
-
-	railStation: MdTrain,
-
-	metroStation: MdSubway,
-
-	tramStation: MdTram,
-	onstreetTram: MdTram,
-
-	shop: MdStore,
-	highway: MdTimeToLeave,
-	place: MdPlace,
 	amenity: MdRestaurant,
-	natural: MdPark,
-	ferryPort: MdDirectionsBoat,
-	landuse: MdLandscape,
 	building: MdBusiness,
-	leisure: MdWeekend,
-	office: MdWork,
-	tourism: MdBeachAccess,
-	man_made: MdEmojiPeople,
+	busStation: MdDirectionsBus,
 	combiTramBus: MdTram,
+	ferryPort: MdDirectionsBoat,
+	highway: MdTimeToLeave,
 	historic: MdHistory,
-	other: MdPlace
+	landuse: MdLandscape,
+	leisure: MdWeekend,
+	man_made: MdEmojiPeople,
+	metroStation: MdSubway,
+	natural: MdPark,
+	office: MdWork,
+	onstreetBus: MdDirectionsBus,
+	onstreetTram: MdTram,
+	other: MdPlace,
+	place: MdPlace,
+	railStation: MdTrain,
+	railway: MdTrain,
+	shop: MdStore,
+	tourism: MdBeachAccess,
+	tramStation: MdTram
 };
 
 export const TypeToIcon: FC<{

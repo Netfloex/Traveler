@@ -12,13 +12,13 @@ const GenericLocation = z.object({
 
 const TransitLocationType = z.enum([
 	"busStation",
-	"railStation",
+	"combiTramBus",
+	"ferryPort",
+	"metroStation",
 	"onstreetBus",
 	"onstreetTram",
-	"metroStation",
-	"ferryPort",
-	"tramStation",
-	"combiTramBus"
+	"railStation",
+	"tramStation"
 ]);
 const TransitLocation = GenericLocation.extend({
 	stopid: z.string(),
@@ -27,19 +27,20 @@ const TransitLocation = GenericLocation.extend({
 });
 
 const GeneralLocationType = z.enum([
-	"place",
-	"landuse",
-	"highway",
-	"natural",
 	"amenity",
-	"shop",
 	"building",
-	"leisure",
-	"office",
-	"tourism",
-	"man_made",
+	"highway",
 	"historic",
-	"other"
+	"landuse",
+	"leisure",
+	"man_made",
+	"natural",
+	"office",
+	"other",
+	"place",
+	"railway",
+	"shop",
+	"tourism"
 ]);
 const GeneralLocation = GenericLocation.extend({
 	country: z.string(),
