@@ -1,25 +1,25 @@
 import type { FC } from "react";
 import { IconType } from "react-icons";
 import {
-	MdTrain,
+	MdBeachAccess,
+	MdBusiness,
+	MdDirectionsBoat,
 	MdDirectionsBus,
-	MdSubway,
-	MdStore,
-	MdTimeToLeave,
+	MdEmojiPeople,
+	MdHistory,
+	MdLandscape,
+	MdPark,
 	MdPlace,
 	MdRestaurant,
-	MdPark,
-	MdDirectionsBoat,
-	MdLandscape,
-	MdBusiness,
+	MdStore,
+	MdSubway,
+	MdTerrain,
+	MdTimeToLeave,
+	MdTrain,
 	MdTram,
 	MdWeekend,
-	MdWork,
-	MdBeachAccess,
-	MdEmojiPeople,
-	MdHistory
+	MdWork
 } from "react-icons/md";
-
 import SvgIcon from "@mui/joy/SvgIcon";
 
 import {
@@ -35,6 +35,7 @@ const typeToIconMap: Record<
 	building: MdBusiness,
 	busStation: MdDirectionsBus,
 	combiTramBus: MdTram,
+	combiMetroTram: MdTram,
 	ferryPort: MdDirectionsBoat,
 	highway: MdTimeToLeave,
 	historic: MdHistory,
@@ -42,6 +43,7 @@ const typeToIconMap: Record<
 	leisure: MdWeekend,
 	man_made: MdEmojiPeople,
 	metroStation: MdSubway,
+	mountain_pass: MdTerrain,
 	natural: MdPark,
 	office: MdWork,
 	onstreetBus: MdDirectionsBus,

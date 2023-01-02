@@ -12,6 +12,7 @@ const GenericLocation = z.object({
 
 const TransitLocationType = z.enum([
 	"busStation",
+	"combiMetroTram",
 	"combiTramBus",
 	"ferryPort",
 	"metroStation",
@@ -34,6 +35,7 @@ const GeneralLocationType = z.enum([
 	"landuse",
 	"leisure",
 	"man_made",
+	"mountain_pass",
 	"natural",
 	"office",
 	"other",
@@ -42,10 +44,11 @@ const GeneralLocationType = z.enum([
 	"shop",
 	"tourism"
 ]);
+
 const GeneralLocation = GenericLocation.extend({
 	country: z.string(),
 	detailedType: z.string().optional(),
-	type: GeneralLocationType,
+	type: GeneralLocationType.and(z.string()),
 	city: z.string().optional()
 });
 
