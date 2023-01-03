@@ -1,3 +1,4 @@
+import { PlannerResult } from "./PlannerResultSchema";
 import { DateTime } from "luxon";
 import { Fetcher } from "swr";
 
@@ -18,7 +19,7 @@ const locationUnionToPlannerLocation = (location: LocationUnion) => ({
 	lng: location.location.longitude
 });
 
-export const planner: Fetcher<unknown, PlannerOptions> = async ({
+export const planner: Fetcher<PlannerResult, PlannerOptions> = async ({
 	date,
 	departure,
 	destination
@@ -37,7 +38,7 @@ export const planner: Fetcher<unknown, PlannerOptions> = async ({
 			}
 		})
 
-		.json<unknown>();
+		.json<PlannerResult>();
 
 	const parsed = PlannerResultSchema.safeParse(response);
 

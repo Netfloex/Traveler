@@ -1,0 +1,18 @@
+.loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.tabs {
+	flex-wrap: wrap;
+	gap: 1rem;
+
+	& > * {
+		flex: 1;
+	}
+
+	.tabList {
+		min-width: 100%;
+	}
+}

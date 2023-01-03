@@ -9,8 +9,8 @@ const durationSeconds = z
 const TravelMode = z.enum(["WALK", "BUS", "RAIL", "TRAM", "SUBWAY"]);
 
 const LegFromOrTo = z.object({
-	arrival: z.number().optional(),
-	departure: z.number().optional(),
+	arrival: unixDate.optional(),
+	departure: unixDate.optional(),
 	lat: z.number(),
 	lon: z.number(),
 	name: z.string(),
@@ -19,27 +19,40 @@ const LegFromOrTo = z.object({
 	stopCode: z.string().optional()
 });
 
-const ItineraryLeg = z.object({
-	arrivalDelay: durationSeconds,
-	departureDelay: durationSeconds,
-	startTime: unixDate,
-	endTime: unixDate,
-	mode: TravelMode,
-	routeShortName: z.string().optional(),
-	tripId: z.string().optional(),
-	// intermediateStops: z.array().optional(),
-	from: LegFromOrTo,
-	to: LegFromOrTo
-});
+const ItineraryLeg = z
+	.object({
+		arrivalDelay: durationSeconds,
+		departureDelay: durationSeconds,
+		duration: durationSeconds,
+		startTime: unixDate,
+		endTime: unixDate,
+		mode: TravelMode,
+		routeShortName: z.string().optional(),
+		tripId: z.string().optional(),
+		// intermediateStops: z.array().optional(),
+		from: LegFromOrTo,
+		to: LegFromOrTo
+	})
+	.transform((leg) => ({
+		...leg,
+		id: `${leg.startTime}${leg.endTime}${leg.routeShortName ?? ""}${
+			leg.tripId ?? ""
+		}`
+	}));
 
-const Itinerary = z.object({
-	startTime: unixDate,
-	endTime: unixDate,
-	legs: z.array(ItineraryLeg),
-	transitTime: durationSeconds,
-	walkTime: durationSeconds,
-	duration: durationSeconds
-});
+const Itinerary = z
+	.object({
+		startTime: unixDate,
+		endTime: unixDate,
+		legs: z.array(ItineraryLeg),
+		transitTime: durationSeconds,
+		walkTime: durationSeconds,
+		duration: durationSeconds
+	})
+	.transform((itinerary) => ({
+		...itinerary,
+		id: `${itinerary.startTime}${itinerary.endTime}`
+	}));
 
 export const PlannerResultSchema = z
 	.object({
@@ -53,3 +66,7 @@ export const PlannerResultSchema = z
 		statusCode: z.number().refine((s) => s == 200)
 	})
 	.transform((resp) => resp.result.result);
+
+export type PlannerResult = z.output<typeof PlannerResultSchema>;
+export type Itinerary = z.output<typeof Itinerary>;
+export type TravelMode = z.output<typeof TravelMode>;
