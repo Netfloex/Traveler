@@ -49,12 +49,11 @@ const Planner: FC = () => {
 
 				{departure && destination && (
 					<Card variant="outlined">
-						<Typography>
-							<Typography level="h4" endDecorator={<></>}>
+						<Typography level="h4">
+							<Typography endDecorator={<></>}>
 								{locationToString(departure)}
 							</Typography>
 							<Typography
-								level="h4"
 								startDecorator={
 									<SvgIcon component={MdArrowForward} />
 								}

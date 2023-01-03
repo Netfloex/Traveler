@@ -18,6 +18,7 @@ const TransitLocationType = z.enum([
 	"metroStation",
 	"onstreetBus",
 	"onstreetTram",
+	"other",
 	"railStation",
 	"tramStation"
 ]);
@@ -30,6 +31,7 @@ const TransitLocation = GenericLocation.extend({
 const GeneralLocationType = z.enum([
 	"amenity",
 	"building",
+	"club",
 	"highway",
 	"historic",
 	"landuse",

@@ -22,16 +22,18 @@ const LegFromOrTo = z.object({
 const ItineraryLeg = z
 	.object({
 		arrivalDelay: durationSeconds,
+		agencyName: z.string().optional(),
 		departureDelay: durationSeconds,
 		duration: durationSeconds,
-		startTime: unixDate,
 		endTime: unixDate,
+		from: LegFromOrTo,
+		// intermediateStops: z.array().optional(),
+		headsign: z.string()?.optional(),
 		mode: TravelMode,
 		routeShortName: z.string().optional(),
-		tripId: z.string().optional(),
-		// intermediateStops: z.array().optional(),
-		from: LegFromOrTo,
-		to: LegFromOrTo
+		startTime: unixDate,
+		to: LegFromOrTo,
+		tripId: z.string().optional()
 	})
 	.transform((leg) => ({
 		...leg,

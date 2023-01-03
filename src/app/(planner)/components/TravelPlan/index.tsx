@@ -78,7 +78,12 @@ export const TravelPlan: FC<{
 					.slice(0, -1)}
 			</TabList>
 			{itineraries.map((itinerary) => (
-				<ItineraryPanel key={itinerary.id} itinerary={itinerary} />
+				<ItineraryPanel
+					key={itinerary.id}
+					itinerary={itinerary}
+					departure={departure}
+					destination={destination}
+				/>
 			))}
 		</Tabs>
 	);

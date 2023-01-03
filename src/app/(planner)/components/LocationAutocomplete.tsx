@@ -71,7 +71,7 @@ export const LocationAutocomplete: FC<{
 				getOptionLabel={locationToString}
 				filterOptions={createFilterOptions({
 					stringify(option) {
-						return JSON.stringify(option);
+						return `${option.name}${option.city ?? ""}`;
 					}
 				})}
 				startDecorator={
