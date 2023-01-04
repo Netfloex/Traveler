@@ -1,27 +1,27 @@
-import { SearchResult, SearchResultSchema } from "./SearchResultSchema";
+import { SearchResult, SearchResultSchema } from "./SearchResultSchema"
 
-import { brengApi } from "@endpoints/brengApi";
+import { brengApi } from "@endpoints/brengApi"
 
 export const search = async (query: string): Promise<SearchResult> => {
 	if (!query) {
-		return { transit: [], general: [] };
+		return { transit: [], general: [] }
 	}
 
 	const response = await brengApi
 		.get("travelplanner/geo/search", {
 			searchParams: {
-				q: query.toLowerCase()
-			}
+				q: query.toLowerCase(),
+			},
 		})
-		.json<SearchResult>();
+		.json<SearchResult>()
 
-	const parsed = SearchResultSchema.safeParse(response);
+	const parsed = SearchResultSchema.safeParse(response)
 
 	if (parsed.success) {
-		return parsed.data;
+		return parsed.data
 	}
 
-	console.error("Error validating search response, query : " + query);
+	console.error("Error validating search response, query : " + query)
 
-	throw parsed.error;
-};
+	throw parsed.error
+}

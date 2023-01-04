@@ -1,8 +1,10 @@
-import SvgIcon from "@mui/joy/SvgIcon";
-import Typography from "@mui/joy/Typography";
-import { Duration as LuxonDuration } from "luxon";
-import type { FC } from "react";
-import { MdSchedule } from "react-icons/md";
+import { Duration as LuxonDuration } from "luxon"
+import { MdSchedule } from "react-icons/md"
+
+import SvgIcon from "@mui/joy/SvgIcon"
+import Typography from "@mui/joy/Typography"
+
+import type { FC } from "react"
 
 export const Duration: FC<{ duration: LuxonDuration }> = ({ duration }) => {
 	return (
@@ -13,5 +15,5 @@ export const Duration: FC<{ duration: LuxonDuration }> = ({ duration }) => {
 		>
 			{duration.toFormat("h:mm")}
 		</Typography>
-	);
-};
+	)
+}

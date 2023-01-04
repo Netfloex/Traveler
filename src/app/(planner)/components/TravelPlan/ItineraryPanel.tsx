@@ -1,24 +1,25 @@
-import { DateTime } from "luxon";
-import { FC } from "react";
+import { DateTime } from "luxon"
+import { FC } from "react"
 
-import Card from "@mui/joy/Card";
-import List from "@mui/joy/List";
-import ListItem from "@mui/joy/ListItem";
-import TabPanel from "@mui/joy/TabPanel";
-import Typography from "@mui/joy/Typography";
+import { Divider, ListDivider } from "@mui/joy"
+import Card from "@mui/joy/Card"
+import List from "@mui/joy/List"
+import ListItem from "@mui/joy/ListItem"
+import TabPanel from "@mui/joy/TabPanel"
+import Typography from "@mui/joy/Typography"
 
-import { Duration } from "../Duration";
-import { ModeTypeToIcon } from "../ModeTypeToIcon";
-import { StartAndEndTimes } from "../StartAndEndTimes";
+import { locationToString } from "@utils/locationToString"
 
-import { Itinerary } from "@endpoints/planner/PlannerResultSchema";
-import { LocationUnion } from "@endpoints/search/SearchResultSchema";
-import { Divider, ListDivider } from "@mui/joy";
-import { locationToString } from "@utils/locationToString";
+import { Duration } from "../Duration"
+import { ModeTypeToIcon } from "../ModeTypeToIcon"
+import { StartAndEndTimes } from "../StartAndEndTimes"
+
+import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
+import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
 export const LocationItem: FC<{
-	location: LocationUnion;
-	time: DateTime;
+	location: LocationUnion
+	time: DateTime
 }> = ({ location, time }) => {
 	return (
 		<ListItem>
@@ -28,13 +29,13 @@ export const LocationItem: FC<{
 				{locationToString(location)}
 			</Typography>
 		</ListItem>
-	);
-};
+	)
+}
 
 export const ItineraryPanel: FC<{
-	itinerary: Itinerary;
-	departure: LocationUnion;
-	destination: LocationUnion;
+	itinerary: Itinerary
+	departure: LocationUnion
+	destination: LocationUnion
 }> = ({ itinerary, departure, destination }) => {
 	return (
 		<TabPanel value={itinerary.id}>
@@ -47,7 +48,7 @@ export const ItineraryPanel: FC<{
 					{itinerary.startTime.toLocaleString({
 						weekday: "short",
 						month: "long",
-						day: "numeric"
+						day: "numeric",
 					})}
 				</Typography>
 				<Divider />
@@ -104,7 +105,7 @@ export const ItineraryPanel: FC<{
 								<div>
 									<Typography
 										startDecorator={leg.endTime.toLocaleString(
-											DateTime.TIME_24_SIMPLE
+											DateTime.TIME_24_SIMPLE,
 										)}
 									>
 										{leg.to.name}
@@ -112,7 +113,7 @@ export const ItineraryPanel: FC<{
 									{/*  Start time for next department*/}
 									{itinerary.legs.length > i + 1 &&
 										!itinerary.legs[i + 1].startTime.equals(
-											leg.endTime
+											leg.endTime,
 										) && (
 											<Typography>
 												{itinerary.legs[
@@ -122,7 +123,7 @@ export const ItineraryPanel: FC<{
 										)}
 								</div>
 							</ListItem>
-						)
+						),
 					])}
 
 					{/* Destination */}
@@ -133,5 +134,5 @@ export const ItineraryPanel: FC<{
 				</List>
 			</Card>
 		</TabPanel>
-	);
-};
+	)
+}

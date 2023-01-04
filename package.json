@@ -20,8 +20,8 @@
 	"devDependencies": {
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
+		"@ianvs/prettier-plugin-sort-imports": "^3.7.1",
 		"@mui/joy": "^5.0.0-alpha.60",
-		"@trivago/prettier-plugin-sort-imports": "^4.0.0",
 		"@types/luxon": "^3.2.0",
 		"@types/node": "^18.11.18",
 		"@types/react": "^18.0.26",

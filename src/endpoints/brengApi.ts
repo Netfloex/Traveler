@@ -1,6 +1,6 @@
-import ky from "ky";
+import ky from "ky"
 
 export const brengApi = ky.extend({
 	prefixUrl: "https://www.breng.nl/api",
-	cache: "force-cache"
-});
+	cache: "force-cache",
+})

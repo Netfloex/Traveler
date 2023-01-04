@@ -1,29 +1,27 @@
-"use client";
+"use client"
 
-import styles from "./Planner.module.scss";
+import styles from "./Planner.module.scss"
 
-import { NextSeo } from "next-seo";
-import { useState, FC } from "react";
-import { MdArrowForward } from "react-icons/md";
+import { NextSeo } from "next-seo"
+import { FC, useState } from "react"
+import { MdArrowForward } from "react-icons/md"
 
-import SvgIcon from "@mui/joy/SvgIcon";
+import SvgIcon from "@mui/joy/SvgIcon"
 
-import { locationToString } from "@utils/locationToString";
+import { locationToString } from "@utils/locationToString"
 
-import { LocationAutocomplete } from "./components/LocationAutocomplete";
-import { TravelPlan } from "./components/TravelPlan";
+import { LocationAutocomplete } from "./components/LocationAutocomplete"
+import { TravelPlan } from "./components/TravelPlan"
 
-import { Card, Typography } from "@client/joy";
+import { Card, Typography } from "@client/joy"
 
-import { LocationUnion } from "@endpoints/search/SearchResultSchema";
+import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
-import SEO from "@seo-default";
+import SEO from "@seo-default"
 
 const Planner: FC = () => {
-	const [departure, setDeparture] = useState<LocationUnion | false>(false);
-	const [destination, setDestination] = useState<LocationUnion | false>(
-		false
-	);
+	const [departure, setDeparture] = useState<LocationUnion | false>(false)
+	const [destination, setDestination] = useState<LocationUnion | false>(false)
 
 	return (
 		<>
@@ -69,7 +67,7 @@ const Planner: FC = () => {
 				)}
 			</div>
 		</>
-	);
-};
+	)
+}
 
-export default Planner;
+export default Planner

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
 	Dispatch,
@@ -8,51 +8,52 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 	useCallback,
-	useState
-} from "react";
-import { MdSearch } from "react-icons/md";
-import { locationToString } from "src/utils/locationToString";
+	useState,
+} from "react"
+import { MdSearch } from "react-icons/md"
 
-import { SvgIcon } from "@mui/joy";
 import Autocomplete, {
 	AutocompleteInputChangeReason,
-	createFilterOptions
-} from "@mui/joy/Autocomplete";
-import AutocompleteOption from "@mui/joy/AutocompleteOption";
-import CircularProgress from "@mui/joy/CircularProgress";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import ListItemContent from "@mui/joy/ListItemContent";
-import ListItemDecorator from "@mui/joy/ListItemDecorator";
-import Typography from "@mui/joy/Typography";
+	createFilterOptions,
+} from "@mui/joy/Autocomplete"
+import AutocompleteOption from "@mui/joy/AutocompleteOption"
+import CircularProgress from "@mui/joy/CircularProgress"
+import FormControl from "@mui/joy/FormControl"
+import FormLabel from "@mui/joy/FormLabel"
+import ListItemContent from "@mui/joy/ListItemContent"
+import ListItemDecorator from "@mui/joy/ListItemDecorator"
+import SvgIcon from "@mui/joy/SvgIcon"
+import Typography from "@mui/joy/Typography"
 
-import { TypeToIcon } from "./TypeToIcon";
+import { locationToString } from "@utils/locationToString"
 
-import { search } from "@endpoints/search";
-import { LocationUnion } from "@endpoints/search/SearchResultSchema";
+import { TypeToIcon } from "./TypeToIcon"
+
+import { search } from "@endpoints/search"
+import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
 type OnChange = (
 	event: SyntheticEvent<Element, Event>,
 	value: string,
-	reason: AutocompleteInputChangeReason
-) => void;
+	reason: AutocompleteInputChangeReason,
+) => void
 
 export const LocationAutocomplete: FC<{
-	label: string;
-	placeholder: string;
-	selected: false | LocationUnion;
-	setSelected: Dispatch<SetStateAction<false | LocationUnion>>;
+	label: string
+	placeholder: string
+	selected: false | LocationUnion
+	setSelected: Dispatch<SetStateAction<false | LocationUnion>>
 }> = ({ label, placeholder, selected, setSelected }) => {
-	const [locations, setLocations] = useState<LocationUnion[]>([]);
-	const [loading, setLoading] = useState(false);
+	const [locations, setLocations] = useState<LocationUnion[]>([])
+	const [loading, setLoading] = useState(false)
 
 	const onInputChange: OnChange = useCallback((_, value) => {
-		setLoading(true);
+		setLoading(true)
 		search(value).then((data) => {
-			setLocations([...(data?.transit ?? []), ...(data?.general ?? [])]);
-			setLoading(false);
-		});
-	}, []);
+			setLocations([...(data?.transit ?? []), ...(data?.general ?? [])])
+			setLoading(false)
+		})
+	}, [])
 
 	return (
 		<FormControl>
@@ -66,13 +67,13 @@ export const LocationAutocomplete: FC<{
 				placeholder={placeholder}
 				variant="soft"
 				onChange={(_, value): void => {
-					setSelected(value ?? false);
+					setSelected(value ?? false)
 				}}
 				getOptionLabel={locationToString}
 				filterOptions={createFilterOptions({
 					stringify(option) {
-						return `${option.name}${option.city ?? ""}`;
-					}
+						return `${option.name}${option.city ?? ""}`
+					},
 				})}
 				startDecorator={
 					selected ? (
@@ -109,5 +110,5 @@ export const LocationAutocomplete: FC<{
 				)}
 			/>
 		</FormControl>
-	);
-};
+	)
+}

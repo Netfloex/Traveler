@@ -1,9 +1,9 @@
-import "@styles/global.scss";
+import "@styles/global.scss"
 
-import { InitColorSchemeScript } from "@client/InitColorSchemeScript";
-import { CssBaseline, CssVarsProvider } from "@client/joy";
+import { InitColorSchemeScript } from "@client/InitColorSchemeScript"
+import { CssBaseline, CssVarsProvider } from "@client/joy"
 
-import { FCC } from "@typings/FCC";
+import { FCC } from "@typings/FCC"
 
 const RootLayout: FCC = ({ children }) => {
 	return (
@@ -23,7 +23,7 @@ const RootLayout: FCC = ({ children }) => {
 				</CssVarsProvider>
 			</body>
 		</html>
-	);
-};
+	)
+}
 
-export default RootLayout;
+export default RootLayout

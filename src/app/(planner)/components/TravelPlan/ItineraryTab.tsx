@@ -1,18 +1,18 @@
-import styles from "./ItineraryTab.module.scss";
+import styles from "./ItineraryTab.module.scss"
 
-import { FC } from "react";
-import { MdChevronRight } from "react-icons/md";
+import { FC } from "react"
+import { MdChevronRight } from "react-icons/md"
 
-import ListItemContent from "@mui/joy/ListItemContent";
-import SvgIcon from "@mui/joy/SvgIcon";
-import Tab from "@mui/joy/Tab";
-import Typography from "@mui/joy/Typography";
+import ListItemContent from "@mui/joy/ListItemContent"
+import SvgIcon from "@mui/joy/SvgIcon"
+import Tab from "@mui/joy/Tab"
+import Typography from "@mui/joy/Typography"
 
-import { Duration } from "../Duration";
-import { ModeTypeToIcon } from "../ModeTypeToIcon";
+import { Duration } from "../Duration"
+import { ModeTypeToIcon } from "../ModeTypeToIcon"
+import { StartAndEndTimes } from "../StartAndEndTimes"
 
-import { Itinerary } from "@endpoints/planner/PlannerResultSchema";
-import { StartAndEndTimes } from "src/app/(planner)/components/StartAndEndTimes";
+import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
 
 export const ItineraryTab: FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
 	return (
@@ -47,5 +47,5 @@ export const ItineraryTab: FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
 				</Typography>
 			</ListItemContent>
 		</Tab>
-	);
-};
+	)
+}

@@ -1,14 +1,15 @@
-import { DateTime } from "luxon";
-import { MdArrowForward } from "react-icons/md";
+import { DateTime } from "luxon"
+import { MdArrowForward } from "react-icons/md"
 
-import { Itinerary } from "@endpoints/planner/PlannerResultSchema";
-import SvgIcon from "@mui/joy/SvgIcon";
-import Typography from "@mui/joy/Typography";
+import SvgIcon from "@mui/joy/SvgIcon"
+import Typography from "@mui/joy/Typography"
 
-import type { FC } from "react";
+import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
+
+import type { FC } from "react"
 
 export const StartAndEndTimes: FC<{ itinerary: Itinerary }> = ({
-	itinerary
+	itinerary,
 }) => {
 	return (
 		<>
@@ -19,5 +20,5 @@ export const StartAndEndTimes: FC<{ itinerary: Itinerary }> = ({
 				{itinerary.endTime.toLocaleString(DateTime.TIME_24_SIMPLE)}
 			</Typography>
 		</>
-	);
-};
+	)
+}

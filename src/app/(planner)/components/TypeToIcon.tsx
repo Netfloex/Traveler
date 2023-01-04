@@ -1,5 +1,4 @@
-import type { FC } from "react";
-import { IconType } from "react-icons";
+import { IconType } from "react-icons"
 import {
 	MdBeachAccess,
 	MdBusiness,
@@ -19,14 +18,17 @@ import {
 	MdTrain,
 	MdTram,
 	MdWeekend,
-	MdWork
-} from "react-icons/md";
-import SvgIcon from "@mui/joy/SvgIcon";
+	MdWork,
+} from "react-icons/md"
+
+import SvgIcon from "@mui/joy/SvgIcon"
 
 import {
 	GeneralLocationType,
-	TransitLocationType
-} from "@endpoints/search/SearchResultSchema";
+	TransitLocationType,
+} from "@endpoints/search/SearchResultSchema"
+
+import type { FC } from "react"
 
 const typeToIconMap: Record<
 	GeneralLocationType | TransitLocationType,
@@ -56,16 +58,16 @@ const typeToIconMap: Record<
 	railway: MdTrain,
 	shop: MdStore,
 	tourism: MdBeachAccess,
-	tramStation: MdTram
-};
+	tramStation: MdTram,
+}
 
 export const TypeToIcon: FC<{
-	type: GeneralLocationType | TransitLocationType;
+	type: GeneralLocationType | TransitLocationType
 }> = ({ type }) => {
-	const icon = typeToIconMap[type];
-	if (icon) return <SvgIcon component={icon} />;
+	const icon = typeToIconMap[type]
+	if (icon) return <SvgIcon component={icon} />
 	console.log(
-		type + " is not in the list of known types! There is no icon for it"
-	);
-	return <>{type}</>;
-};
+		type + " is not in the list of known types! There is no icon for it",
+	)
+	return <>{type}</>
+}

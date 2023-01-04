@@ -1,44 +1,44 @@
-import styles from "./TravelPlan.module.scss";
+import styles from "./TravelPlan.module.scss"
 
-import { DateTime } from "luxon";
-import { FC, useEffect, useState } from "react";
-import useSWR from "swr";
+import { DateTime } from "luxon"
+import { FC, useEffect, useState } from "react"
+import { MdWarning } from "react-icons/md"
+import useSWR from "swr"
 
-import CircularProgress from "@mui/joy/CircularProgress";
-import ListDivider from "@mui/joy/ListDivider";
-import TabList from "@mui/joy/TabList";
-import Tabs from "@mui/joy/Tabs";
-import Typography from "@mui/joy/Typography";
+import { SvgIcon } from "@mui/joy"
+import Alert from "@mui/joy/Alert"
+import CircularProgress from "@mui/joy/CircularProgress"
+import ListDivider from "@mui/joy/ListDivider"
+import TabList from "@mui/joy/TabList"
+import Tabs from "@mui/joy/Tabs"
+import Typography from "@mui/joy/Typography"
 
-import { ItineraryPanel } from "./ItineraryPanel";
-import { ItineraryTab } from "./ItineraryTab";
+import { ItineraryPanel } from "./ItineraryPanel"
+import { ItineraryTab } from "./ItineraryTab"
 
-import { planner, PlannerOptions } from "@endpoints/planner";
-import { LocationUnion } from "@endpoints/search/SearchResultSchema";
-import { SvgIcon } from "@mui/joy";
-import Alert from "@mui/joy/Alert";
-import { MdWarning } from "react-icons/md";
+import { PlannerOptions, planner } from "@endpoints/planner"
+import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
 export const TravelPlan: FC<{
-	departure: LocationUnion;
-	destination: LocationUnion;
+	departure: LocationUnion
+	destination: LocationUnion
 }> = ({ departure, destination }) => {
-	const [date] = useState(DateTime.now().set({ hour: 12 }));
+	const [date] = useState(DateTime.now().set({ hour: 12 }))
 	const { data, error, isLoading } = useSWR(
 		{ date, departure, destination } satisfies PlannerOptions,
-		planner
-	);
+		planner,
+	)
 
 	useEffect(() => {
-		if (error) console.error(error);
-	}, [error]);
+		if (error) console.error(error)
+	}, [error])
 
 	if (isLoading) {
 		return (
 			<div className={styles.loading}>
 				<CircularProgress />
 			</div>
-		);
+		)
 	} else if (error) {
 		return (
 			<>
@@ -51,13 +51,13 @@ export const TravelPlan: FC<{
 				<Typography>{String(error)}</Typography>
 				{"stack" in error && <pre>{error.stack}</pre>}
 			</>
-		);
+		)
 	}
 
-	const { itineraries } = data!.plan;
+	const { itineraries } = data!.plan
 
 	if (!itineraries.length) {
-		return <>No itineraries</>;
+		return <>No itineraries</>
 	}
 
 	return (
@@ -73,7 +73,7 @@ export const TravelPlan: FC<{
 							key={itinerary.id}
 							itinerary={itinerary}
 						/>,
-						<ListDivider key={itinerary.id + "hr"} />
+						<ListDivider key={itinerary.id + "hr"} />,
 					])
 					.slice(0, -1)}
 			</TabList>
@@ -86,5 +86,5 @@ export const TravelPlan: FC<{
 				/>
 			))}
 		</Tabs>
-	);
-};
+	)
+}
