@@ -46,13 +46,22 @@ const Itinerary = z
 	.object({
 		startTime: unixDate,
 		endTime: unixDate,
-		legs: z.array(ItineraryLeg),
+		legs: z
+			.array(ItineraryLeg)
+			.transform((legs) =>
+				legs.filter(
+					(leg) =>
+						!(leg.mode === "WALK" && leg.from.name === leg.to.name)
+				)
+			),
 		transitTime: durationSeconds,
 		walkTime: durationSeconds,
 		duration: durationSeconds
 	})
 	.transform((itinerary) => ({
 		...itinerary,
+		startTime: itinerary.legs[0].startTime,
+		endTime: itinerary.legs[itinerary.legs.length - 1].endTime,
 		id: `${itinerary.startTime}${itinerary.endTime}`
 	}));
 
