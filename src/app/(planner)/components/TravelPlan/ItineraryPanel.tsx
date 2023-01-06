@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { FC } from "react"
+import { FC, useCallback } from "react"
 
 import { Divider, ListDivider } from "@mui/joy"
 import Card from "@mui/joy/Card"
@@ -37,6 +37,11 @@ export const ItineraryPanel: FC<{
 	departure: LocationUnion
 	destination: LocationUnion
 }> = ({ itinerary, departure, destination }) => {
+	const nextLeg = useCallback(
+		(i: number) => itinerary.legs.at(i + 1),
+		[itinerary.legs],
+	)
+
 	return (
 		<TabPanel value={itinerary.id}>
 			<Card variant="soft">
@@ -99,7 +104,8 @@ export const ItineraryPanel: FC<{
 							</Typography>
 						</ListItem>,
 						<ListDivider key={leg.id + "divider2"} />,
-						itinerary.legs.length - 1 !== i && (
+						// Do not render if this is the final destination
+						nextLeg(i) && (
 							// end station
 							<ListItem key={leg.id + "endStation"}>
 								<div>
@@ -111,17 +117,22 @@ export const ItineraryPanel: FC<{
 										{leg.to.name}
 									</Typography>
 									{/*  Start time for next department*/}
-									{itinerary.legs.length > i + 1 &&
-										!itinerary.legs[i + 1].startTime.equals(
+									{nextLeg(i) !== undefined &&
+										!nextLeg(i)!.startTime.equals(
 											leg.endTime,
-										) && (
-											<Typography>
-												{itinerary.legs[
-													i + 1
-												].startTime.toFormat("T")}
-											</Typography>
-										)}
+										) &&
+										nextLeg(i)!.startTime.toFormat("T")}
 								</div>
+								{nextLeg(i) &&
+									nextLeg(i)!.from.platformCode && (
+										<Typography
+											marginLeft="auto"
+											level="body2"
+										>
+											platform{" "}
+											{nextLeg(i)!.from.platformCode}
+										</Typography>
+									)}
 							</ListItem>
 						),
 					])}
