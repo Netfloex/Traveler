@@ -80,4 +80,5 @@ export const PlannerResultSchema = z
 
 export type PlannerResult = z.output<typeof PlannerResultSchema>
 export type Itinerary = z.output<typeof Itinerary>
+export type ItineraryLeg = z.output<typeof ItineraryLeg>
 export type TravelMode = z.output<typeof TravelMode>
