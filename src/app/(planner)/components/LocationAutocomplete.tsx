@@ -8,6 +8,8 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 	useCallback,
+	useEffect,
+	useRef,
 	useState,
 } from "react"
 import { MdSearch } from "react-icons/md"
@@ -47,7 +49,11 @@ export const LocationAutocomplete: FC<{
 	const [locations, setLocations] = useState<LocationUnion[]>([])
 	const [loading, setLoading] = useState(false)
 
+	const lastValue = useRef("")
 	const onInputChange: OnChange = useCallback((_, value) => {
+		if (lastValue.current == value) return
+		lastValue.current = value
+
 		setLoading(true)
 		search(value).then((data) => {
 			setLocations([...(data?.transit ?? []), ...(data?.general ?? [])])
