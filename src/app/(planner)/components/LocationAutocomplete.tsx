@@ -8,7 +8,6 @@ import {
 	SetStateAction,
 	SyntheticEvent,
 	useCallback,
-	useEffect,
 	useRef,
 	useState,
 } from "react"
