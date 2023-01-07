@@ -61,28 +61,26 @@ export const TravelPlan: FC<{
 	}
 
 	return (
-		<Tabs
-			orientation="vertical"
-			defaultValue={itineraries[0].id}
-			className={styles.tabs}
-		>
+		<Tabs orientation="vertical" defaultValue={0} className={styles.tabs}>
 			<TabList className={styles.tabList}>
 				{itineraries
-					.flatMap((itinerary) => [
+					.flatMap((itinerary, i) => [
 						<ItineraryTab
 							key={itinerary.id}
 							itinerary={itinerary}
+							i={i}
 						/>,
 						<ListDivider key={itinerary.id + "hr"} />,
 					])
 					.slice(0, -1)}
 			</TabList>
-			{itineraries.map((itinerary) => (
+			{itineraries.map((itinerary, i) => (
 				<ItineraryPanel
 					key={itinerary.id}
 					itinerary={itinerary}
 					departure={departure}
 					destination={destination}
+					i={i}
 				/>
 			))}
 		</Tabs>

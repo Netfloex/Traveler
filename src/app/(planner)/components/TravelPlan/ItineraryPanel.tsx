@@ -102,9 +102,10 @@ export const ItineraryPanel: FC<{
 	itinerary: Itinerary
 	departure: LocationUnion
 	destination: LocationUnion
-}> = ({ itinerary, departure, destination }) => {
+	i: number
+}> = ({ itinerary, departure, destination, i }) => {
 	return (
-		<TabPanel value={itinerary.id}>
+		<TabPanel value={i}>
 			<Card variant="soft">
 				<Typography level="h2" fontSize="md" display="flex">
 					<StartAndEndTimes itinerary={itinerary} />

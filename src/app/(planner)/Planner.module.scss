@@ -9,8 +9,13 @@
 		flex-wrap: wrap;
 		gap: 1rem;
 
-		& > * {
+		& > div {
 			flex: 1;
+		}
+
+		.swapButton {
+			height: var(--IconButton-size, 2.5rem);
+			align-self: flex-end;
 		}
 	}
 }

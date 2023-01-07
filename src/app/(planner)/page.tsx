@@ -3,9 +3,10 @@
 import styles from "./Planner.module.scss"
 
 import { NextSeo } from "next-seo"
-import { FC, useState } from "react"
-import { MdArrowForward } from "react-icons/md"
+import { FC, useCallback, useState } from "react"
+import { MdArrowForward, MdSwapHoriz } from "react-icons/md"
 
+import IconButton from "@mui/joy/IconButton"
 import SvgIcon from "@mui/joy/SvgIcon"
 
 import { locationToString } from "@utils/locationToString"
@@ -23,6 +24,11 @@ const Planner: FC = () => {
 	const [departure, setDeparture] = useState<LocationUnion | false>(false)
 	const [destination, setDestination] = useState<LocationUnion | false>(false)
 
+	const swap = useCallback(() => {
+		setDeparture(destination)
+		setDestination(departure)
+	}, [departure, destination])
+
 	return (
 		<>
 			<NextSeo title="Planner" useAppDir {...SEO} />
@@ -36,6 +42,14 @@ const Planner: FC = () => {
 							selected={departure}
 							setSelected={setDeparture}
 						/>
+						<IconButton
+							onClick={swap}
+							variant="outlined"
+							className={styles.swapButton}
+							disabled={!(departure || destination)}
+						>
+							<SvgIcon component={MdSwapHoriz} />
+						</IconButton>
 						<LocationAutocomplete
 							label="To"
 							placeholder="Destination"

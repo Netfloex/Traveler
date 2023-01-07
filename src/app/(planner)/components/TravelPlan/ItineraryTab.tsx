@@ -14,9 +14,12 @@ import { StartAndEndTimes } from "../StartAndEndTimes"
 
 import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
 
-export const ItineraryTab: FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
+export const ItineraryTab: FC<{ itinerary: Itinerary; i: number }> = ({
+	itinerary,
+	i,
+}) => {
 	return (
-		<Tab value={itinerary.id}>
+		<Tab value={i}>
 			<ListItemContent>
 				<div className={styles.title}>
 					<Typography

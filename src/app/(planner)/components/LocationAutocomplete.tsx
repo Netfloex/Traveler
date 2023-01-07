@@ -66,6 +66,7 @@ export const LocationAutocomplete: FC<{
 				options={locations}
 				placeholder={placeholder}
 				variant="soft"
+				value={selected || null}
 				onChange={(_, value): void => {
 					setSelected(value ?? false)
 				}}
