@@ -48,7 +48,7 @@ const GeneralLocationType = z.enum([
 ])
 
 const GeneralLocation = GenericLocation.extend({
-	country: z.string(),
+	country: z.string().optional(),
 	detailedType: z.string().optional(),
 	type: GeneralLocationType.and(z.string()),
 	city: z.string().optional(),

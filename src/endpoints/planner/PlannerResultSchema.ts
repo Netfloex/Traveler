@@ -72,6 +72,10 @@ export const PlannerResultSchema = z
 				plan: z.object({
 					itineraries: z.array(Itinerary),
 				}),
+				metadata: z.object({
+					nextDateTime: unixDate,
+					prevDateTime: unixDate,
+				}),
 			}),
 		}),
 		statusCode: z.number().refine((s) => s == 200),

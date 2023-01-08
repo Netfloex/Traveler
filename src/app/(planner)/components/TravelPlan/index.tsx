@@ -1,14 +1,15 @@
 import styles from "./TravelPlan.module.scss"
 
 import { DateTime } from "luxon"
-import { FC, useEffect, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 import { MdWarning } from "react-icons/md"
-import useSWR from "swr"
+import useSWRInfinite from "swr/infinite"
 
-import { SvgIcon } from "@mui/joy"
 import Alert from "@mui/joy/Alert"
 import CircularProgress from "@mui/joy/CircularProgress"
 import ListDivider from "@mui/joy/ListDivider"
+import ListItemButton from "@mui/joy/ListItemButton"
+import SvgIcon from "@mui/joy/SvgIcon"
 import TabList from "@mui/joy/TabList"
 import Tabs from "@mui/joy/Tabs"
 import Typography from "@mui/joy/Typography"
@@ -17,17 +18,30 @@ import { ItineraryPanel } from "./ItineraryPanel"
 import { ItineraryTab } from "./ItineraryTab"
 
 import { PlannerOptions, planner } from "@endpoints/planner"
+import { PlannerResult } from "@endpoints/planner/PlannerResultSchema"
 import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
-export const TravelPlan: FC<{
+const UnmemoizedTravelPlan: FC<{
 	departure: LocationUnion
 	destination: LocationUnion
 }> = ({ departure, destination }) => {
-	const [date] = useState(DateTime.now().set({ hour: 12 }))
-	const { data, error, isLoading } = useSWR(
-		{ date, departure, destination } satisfies PlannerOptions,
+	const [date] = useState(DateTime.now())
+
+	const { data, error, isLoading, setSize, size } = useSWRInfinite(
+		(_, data: PlannerResult | undefined): PlannerOptions => {
+			return {
+				date: data ? data.metadata.nextDateTime : date,
+				departure,
+				destination,
+			}
+		},
 		planner,
 	)
+
+	const isLoadingInitialData = !data && !error
+	const isLoadingMore =
+		isLoadingInitialData ||
+		(size > 0 && data && typeof data[size - 1] === "undefined")
 
 	useEffect(() => {
 		if (error) console.error(error)
@@ -54,7 +68,7 @@ export const TravelPlan: FC<{
 		)
 	}
 
-	const { itineraries } = data!.plan
+	const itineraries = data!.flatMap((e) => e.plan.itineraries)
 
 	if (!itineraries.length) {
 		return <>No itineraries</>
@@ -73,6 +87,24 @@ export const TravelPlan: FC<{
 						<ListDivider key={itinerary.id + "hr"} />,
 					])
 					.slice(0, -1)}
+				<ListDivider />
+				<ListItemButton
+					onClick={(): void => void setSize((size) => size + 1)}
+					disabled={isLoadingMore}
+				>
+					Later...
+					<Typography level="body2" marginLeft="auto" display="flex">
+						{isLoadingMore ? (
+							<CircularProgress size="sm" />
+						) : (
+							data
+								?.at(-1)
+								?.metadata.nextDateTime.toLocaleString(
+									DateTime.TIME_24_SIMPLE,
+								)
+						)}
+					</Typography>
+				</ListItemButton>
 			</TabList>
 			{itineraries.map((itinerary, i) => (
 				<ItineraryPanel
@@ -86,3 +118,5 @@ export const TravelPlan: FC<{
 		</Tabs>
 	)
 }
+
+export const TravelPlan = memo(UnmemoizedTravelPlan)

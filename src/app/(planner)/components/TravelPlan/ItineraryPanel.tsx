@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { FC } from "react"
+import { FC, memo } from "react"
 
 import { Divider, ListDivider } from "@mui/joy"
 import Card from "@mui/joy/Card"
@@ -98,7 +98,7 @@ const LegItem: FC<{ leg: ItineraryLeg; nextLeg?: ItineraryLeg }> = ({
 	)
 }
 
-export const ItineraryPanel: FC<{
+const UnmemoizedItineraryPanel: FC<{
 	itinerary: Itinerary
 	departure: LocationUnion
 	destination: LocationUnion
@@ -144,3 +144,5 @@ export const ItineraryPanel: FC<{
 		</TabPanel>
 	)
 }
+
+export const ItineraryPanel = memo(UnmemoizedItineraryPanel)

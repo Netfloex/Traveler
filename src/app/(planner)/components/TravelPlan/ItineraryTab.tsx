@@ -1,6 +1,6 @@
 import styles from "./ItineraryTab.module.scss"
 
-import { FC } from "react"
+import { FC, memo } from "react"
 import { MdChevronRight } from "react-icons/md"
 
 import ListItemContent from "@mui/joy/ListItemContent"
@@ -14,10 +14,10 @@ import { StartAndEndTimes } from "../StartAndEndTimes"
 
 import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
 
-export const ItineraryTab: FC<{ itinerary: Itinerary; i: number }> = ({
-	itinerary,
-	i,
-}) => {
+const UnmemoizedItineraryTab: FC<{
+	itinerary: Itinerary
+	i: number
+}> = ({ itinerary, i }) => {
 	return (
 		<Tab value={i}>
 			<ListItemContent>
@@ -52,3 +52,5 @@ export const ItineraryTab: FC<{ itinerary: Itinerary; i: number }> = ({
 		</Tab>
 	)
 }
+
+export const ItineraryTab = memo(UnmemoizedItineraryTab)
