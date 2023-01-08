@@ -4,18 +4,51 @@
 	margin: 1rem;
 	gap: 1rem;
 
-	.textFieldsWrapper {
+	.form {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: row;
 		gap: 1rem;
 
-		& > div {
-			flex: 1;
+		.textFieldsWrapper {
+			width: 100%;
+			min-width: 0;
+
+			& > div {
+				flex: 1;
+			}
 		}
 
 		.swapButton {
 			height: var(--IconButton-size, 2.5rem);
+		}
+
+		.swapButtonHoriz {
+			display: none;
 			align-self: flex-end;
+		}
+
+		.swapButtonVert {
+			display: flex;
+			align-self: center;
+		}
+
+		@media screen and (min-width: 800px) {
+			display: block;
+
+			.textFieldsWrapper {
+				display: flex;
+				width: unset;
+				flex-flow: row nowrap;
+				gap: 1rem;
+			}
+
+			.swapButtonHoriz {
+				display: flex;
+			}
+
+			.swapButtonVert {
+				display: none;
+			}
 		}
 	}
 }

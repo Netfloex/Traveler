@@ -3,8 +3,8 @@
 import styles from "./Planner.module.scss"
 
 import { NextSeo } from "next-seo"
-import { FC, useCallback, useState } from "react"
-import { MdArrowForward, MdSwapHoriz } from "react-icons/md"
+import { FC, MouseEventHandler, useCallback, useState } from "react"
+import { MdArrowForward, MdSwapHoriz, MdSwapVert } from "react-icons/md"
 
 import IconButton from "@mui/joy/IconButton"
 import SvgIcon from "@mui/joy/SvgIcon"
@@ -19,6 +19,23 @@ import { Card, Typography } from "@client/joy"
 import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
 import SEO from "@seo-default"
+
+const SwapButton: FC<{
+	disabled: boolean
+	horizontal?: boolean
+	onClick: MouseEventHandler
+}> = ({ disabled, horizontal, onClick }) => (
+	<IconButton
+		onClick={onClick}
+		variant="outlined"
+		className={`${styles.swapButton} ${
+			horizontal ? styles.swapButtonHoriz : styles.swapButtonVert
+		}`}
+		disabled={disabled}
+	>
+		<SvgIcon component={horizontal ? MdSwapHoriz : MdSwapVert} />
+	</IconButton>
+)
 
 const Planner: FC = () => {
 	const [departure, setDeparture] = useState<LocationUnion | false>(false)
@@ -35,26 +52,29 @@ const Planner: FC = () => {
 			<div className={styles.wrapper}>
 				<Card variant="outlined">
 					<Typography level="h3">Plan your trip</Typography>
-					<div className={styles.textFieldsWrapper}>
-						<LocationAutocomplete
-							label="From"
-							placeholder="Departure"
-							selected={departure}
-							setSelected={setDeparture}
-						/>
-						<IconButton
+					<div className={styles.form}>
+						<div className={styles.textFieldsWrapper}>
+							<LocationAutocomplete
+								label="From"
+								placeholder="Departure"
+								selected={departure}
+								setSelected={setDeparture}
+							/>
+							<SwapButton
+								onClick={swap}
+								disabled={!(departure || destination)}
+								horizontal
+							/>
+							<LocationAutocomplete
+								label="To"
+								placeholder="Destination"
+								selected={destination}
+								setSelected={setDestination}
+							/>
+						</div>
+						<SwapButton
 							onClick={swap}
-							variant="outlined"
-							className={styles.swapButton}
 							disabled={!(departure || destination)}
-						>
-							<SvgIcon component={MdSwapHoriz} />
-						</IconButton>
-						<LocationAutocomplete
-							label="To"
-							placeholder="Destination"
-							selected={destination}
-							setSelected={setDestination}
 						/>
 					</div>
 				</Card>
