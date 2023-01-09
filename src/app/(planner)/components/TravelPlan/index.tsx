@@ -36,6 +36,10 @@ const UnmemoizedTravelPlan: FC<{
 			}
 		},
 		planner,
+		{
+			revalidateAll: false,
+			revalidateFirstPage: false,
+		},
 	)
 
 	const isLoadingInitialData = !data && !error

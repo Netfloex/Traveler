@@ -1,6 +1,7 @@
 import "@styles/global.scss"
 
 import { InitColorSchemeScript } from "@client/InitColorSchemeScript"
+import { SWRGlobalConfig } from "@client/SWRGlobalConfig"
 import { CssBaseline, CssVarsProvider } from "@client/joy"
 
 import { FCC } from "@typings/FCC"
@@ -19,7 +20,7 @@ const RootLayout: FCC = ({ children }) => {
 				<CssVarsProvider defaultMode="system">
 					<InitColorSchemeScript />
 					<CssBaseline />
-					{children}
+					<SWRGlobalConfig>{children}</SWRGlobalConfig>
 				</CssVarsProvider>
 			</body>
 		</html>
