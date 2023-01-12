@@ -1,8 +1,10 @@
 import styles from "./TravelPlan.module.scss"
 
+import uniqBy from "lodash.uniqby"
 import { DateTime } from "luxon"
-import { FC, memo, useEffect, useState } from "react"
+import { FC, memo, useCallback, useEffect, useMemo, useState } from "react"
 import { MdWarning } from "react-icons/md"
+import { preload } from "swr"
 import useSWRInfinite from "swr/infinite"
 
 import Alert from "@mui/joy/Alert"
@@ -18,7 +20,10 @@ import { ItineraryPanel } from "./ItineraryPanel"
 import { ItineraryTab } from "./ItineraryTab"
 
 import { PlannerOptions, planner } from "@endpoints/planner"
-import { PlannerResult } from "@endpoints/planner/PlannerResultSchema"
+import {
+	Itinerary,
+	PlannerResult,
+} from "@endpoints/planner/PlannerResultSchema"
 import { LocationUnion } from "@endpoints/search/SearchResultSchema"
 
 const UnmemoizedTravelPlan: FC<{
@@ -27,14 +32,18 @@ const UnmemoizedTravelPlan: FC<{
 }> = ({ departure, destination }) => {
 	const [date] = useState(DateTime.now())
 
+	const getPlannerOptions = useCallback<(date: DateTime) => PlannerOptions>(
+		(date) => ({
+			date,
+			departure,
+			destination,
+		}),
+		[departure, destination],
+	)
+
 	const { data, error, isLoading, setSize, size } = useSWRInfinite(
-		(_, data: PlannerResult | undefined): PlannerOptions => {
-			return {
-				date: data ? data.metadata.nextDateTime : date,
-				departure,
-				destination,
-			}
-		},
+		(_, data: PlannerResult | undefined): PlannerOptions =>
+			getPlannerOptions(data ? data.metadata.nextDateTime : date),
 		planner,
 		{
 			revalidateAll: false,
@@ -48,8 +57,23 @@ const UnmemoizedTravelPlan: FC<{
 		(size > 0 && data && typeof data[size - 1] === "undefined")
 
 	useEffect(() => {
+		const lastData = data?.at(-1)
+		if (!lastData) return
+
+		preload(getPlannerOptions(lastData.metadata.nextDateTime), planner)
+	}, [data, getPlannerOptions])
+
+	useEffect(() => {
 		if (error) console.error(error)
 	}, [error])
+
+	const itineraries: Itinerary[] | undefined = useMemo(() => {
+		if (data)
+			return uniqBy(
+				data.flatMap((e) => e.plan.itineraries),
+				"id",
+			)
+	}, [data])
 
 	if (isLoading) {
 		return (
@@ -72,8 +96,9 @@ const UnmemoizedTravelPlan: FC<{
 		)
 	}
 
-	const itineraries = data!.flatMap((e) => e.plan.itineraries)
-
+	if (!itineraries) {
+		return <>No data?</>
+	}
 	if (!itineraries.length) {
 		return <>No itineraries</>
 	}
