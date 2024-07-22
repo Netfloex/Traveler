@@ -1,6 +1,6 @@
 import { SearchResult, SearchResultSchema } from "./SearchResultSchema"
 
-import { brengApi } from "@endpoints/brengApi"
+import { brengApi } from "@endpoints/breng/brengApi"
 
 export const search = async (query: string): Promise<SearchResult> => {
 	if (!query) {

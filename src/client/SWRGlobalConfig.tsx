@@ -11,6 +11,7 @@ export const SWRGlobalConfig: FCC = ({ children }) => {
 				revalidateIfStale: false,
 				revalidateOnFocus: false,
 				revalidateOnReconnect: false,
+				errorRetryCount: 0,
 			}}
 		>
 			{children}

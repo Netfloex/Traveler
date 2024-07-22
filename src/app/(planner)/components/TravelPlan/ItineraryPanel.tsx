@@ -14,23 +14,23 @@ import { Duration } from "../Duration"
 import { ModeTypeToIcon } from "../ModeTypeToIcon"
 import { StartAndEndTimes } from "../StartAndEndTimes"
 
-import { Itinerary, ItineraryLeg } from "@endpoints/planner/PlannerResultSchema"
-import { LocationUnion } from "@endpoints/search/SearchResultSchema"
+import { LocationUnion } from "@endpoints/breng/search/SearchResultSchema"
+import { Itinerary, ItineraryLeg } from "@endpoints/ns/planner/PlannerSchema"
 
-const LocationItem: FC<{
-	location: LocationUnion
-	time: DateTime
-}> = ({ location, time }) => {
-	return (
-		<ListItem>
-			<Typography
-				startDecorator={time.toLocaleString(DateTime.TIME_24_SIMPLE)}
-			>
-				{locationToString(location)}
-			</Typography>
-		</ListItem>
-	)
-}
+// const LocationItem: FC<{
+// 	location: LocationUnion
+// 	time: DateTime
+// }> = ({ location, time }) => {
+// 	return (
+// 		<ListItem>
+// 			<Typography
+// 				startDecorator={time.toLocaleString(DateTime.TIME_24_SIMPLE)}
+// 			>
+// 				{locationToString(location)}
+// 			</Typography>
+// 		</ListItem>
+// 	)
+// }
 
 const LegItem: FC<{ leg: ItineraryLeg; nextLeg?: ItineraryLeg }> = ({
 	leg,
@@ -42,24 +42,27 @@ const LegItem: FC<{ leg: ItineraryLeg; nextLeg?: ItineraryLeg }> = ({
 			<ListItem>
 				<Typography
 					startDecorator={
-						<ModeTypeToIcon fontSize="xl3" mode={leg.mode} />
+						<ModeTypeToIcon
+							fontSize="xl3"
+							mode={leg.product.type}
+						/>
 					}
 					level="body3"
 				>
-					{leg.mode == "WALK" ? (
+					{leg.product.type == "WALK" ? (
 						<Typography>
 							{leg.duration.rescale().toHuman({})}
 						</Typography>
 					) : (
 						<span>
 							<Typography level="body2" display="block">
-								{leg.agencyName} {leg.routeShortName}
+								{leg.product.displayName} {leg.product.number}
 							</Typography>
-							{leg.headsign && (
+							{leg.direction && (
 								<div>
 									heading to
 									<> </>
-									{leg.headsign}
+									{leg.direction}
 								</div>
 							)}
 							<div>
@@ -70,79 +73,77 @@ const LegItem: FC<{ leg: ItineraryLeg; nextLeg?: ItineraryLeg }> = ({
 				</Typography>
 			</ListItem>
 			<ListDivider />
-			{/* // Do not render if this is the final destination */}
-			{nextLeg && (
-				// end station
-				<ListItem>
-					<div>
-						<Typography
-							startDecorator={leg.endTime.toLocaleString(
-								DateTime.TIME_24_SIMPLE,
-							)}
-						>
-							{leg.to.name}
-						</Typography>
-						{/*  Start time for next department*/}
-						{!nextLeg.startTime.equals(leg.endTime) && (
-							<span>{nextLeg.startTime.toFormat("T")}</span>
+			<ListItem>
+				<div>
+					<Typography
+						startDecorator={leg.end.toLocaleString(
+							DateTime.TIME_24_SIMPLE,
 						)}
-					</div>
-					{nextLeg.from.platformCode && (
-						<Typography marginLeft="auto" level="body2">
-							platform {nextLeg.from.platformCode}
-						</Typography>
+					>
+						{leg.destination.name}
+					</Typography>
+					{/*  Start time for next department*/}
+					{nextLeg && !nextLeg.start.equals(leg.end) && (
+						<span>{nextLeg.start.toFormat("T")}</span>
 					)}
-				</ListItem>
-			)}
+				</div>
+				{nextLeg?.origin.actualTrack && (
+					<Typography marginLeft="auto" level="body2">
+						platform {nextLeg.origin.actualTrack}
+					</Typography>
+				)}
+			</ListItem>
 		</>
 	)
 }
 
 const UnmemoizedItineraryPanel: FC<{
 	itinerary: Itinerary
-	departure: LocationUnion
-	destination: LocationUnion
 	i: number
-}> = ({ itinerary, departure, destination, i }) => {
-	return (
-		<TabPanel value={i}>
-			<Card variant="soft">
-				<Typography level="h2" fontSize="md" display="flex">
-					<StartAndEndTimes itinerary={itinerary} />
-					<Duration duration={itinerary.duration} />
-				</Typography>
-				<Typography level="body2">
-					{itinerary.startTime.toLocaleString({
-						weekday: "short",
-						month: "long",
-						day: "numeric",
-					})}
-				</Typography>
-				<Divider />
-				<List>
-					{/* Departure */}
-					<LocationItem
-						time={itinerary.startTime}
-						location={departure}
-					/>
+}> = ({ itinerary, i }) => (
+	<TabPanel value={i}>
+		<Card variant="soft">
+			<Typography level="h2" fontSize="md" display="flex">
+				<StartAndEndTimes itinerary={itinerary} />
+				<Duration duration={itinerary.duration} />
+			</Typography>
+			<Typography level="body2">
+				{itinerary.start?.toLocaleString({
+					weekday: "short",
+					month: "long",
+					day: "numeric",
+				})}
+			</Typography>
+			<Divider />
+			<List>
+				{/* Departure */}
+				{/* <LocationItem time={itinerary.start} location={departure} /> */}
 
-					{itinerary.legs.map((leg, i) => (
-						<LegItem
-							key={leg.id}
-							leg={leg}
-							nextLeg={itinerary.legs.at(i + 1)}
-						/>
-					))}
+				<ListItem>
+					<div>
+						<Typography
+							startDecorator={itinerary.legs[0].start.toLocaleString(
+								DateTime.TIME_24_SIMPLE,
+							)}
+						>
+							{itinerary.legs[0].origin.name}
+						</Typography>
+					</div>
+				</ListItem>
 
-					{/* Destination */}
-					<LocationItem
-						time={itinerary.endTime}
-						location={destination}
+				{itinerary.legs.map((leg, i) => (
+					<LegItem
+						key={leg.id}
+						leg={leg}
+						nextLeg={itinerary.legs.at(i + 1)}
 					/>
-				</List>
-			</Card>
-		</TabPanel>
-	)
-}
+				))}
+
+				{/* Destination */}
+				{/* <LocationItem time={itinerary.end} location={destination} /> */}
+			</List>
+		</Card>
+	</TabPanel>
+)
 
 export const ItineraryPanel = memo(UnmemoizedItineraryPanel)

@@ -26,7 +26,7 @@ import SvgIcon from "@mui/joy/SvgIcon"
 import {
 	GeneralLocationType,
 	TransitLocationType,
-} from "@endpoints/search/SearchResultSchema"
+} from "@endpoints/breng/search/SearchResultSchema"
 
 import type { FC } from "react"
 

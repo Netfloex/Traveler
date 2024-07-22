@@ -12,7 +12,7 @@ import { Duration } from "../Duration"
 import { ModeTypeToIcon } from "../ModeTypeToIcon"
 import { StartAndEndTimes } from "../StartAndEndTimes"
 
-import { Itinerary } from "@endpoints/planner/PlannerResultSchema"
+import { Itinerary } from "@endpoints/ns/planner/PlannerSchema"
 
 const UnmemoizedItineraryTab: FC<{
 	itinerary: Itinerary
@@ -36,14 +36,17 @@ const UnmemoizedItineraryTab: FC<{
 					{itinerary.legs.map((leg, i, { length }) => (
 						<Typography
 							key={leg.id}
-							startDecorator={<ModeTypeToIcon mode={leg.mode} />}
+							startDecorator={
+								<ModeTypeToIcon mode={leg.product.type} />
+							}
 							endDecorator={
 								i + 1 !== length ? (
 									<SvgIcon component={MdChevronRight} />
 								) : undefined
 							}
 						>
-							{leg.routeShortName ??
+							{leg.product.longCategoryName ??
+								leg.product.number ??
 								leg.duration.as("minutes").toFixed(0) + " min"}
 						</Typography>
 					))}

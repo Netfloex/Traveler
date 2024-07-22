@@ -16,7 +16,7 @@ import { TravelPlan } from "./components/TravelPlan"
 
 import { Card, Typography } from "@client/joy"
 
-import { LocationUnion } from "@endpoints/search/SearchResultSchema"
+import { LocationUnion } from "@endpoints/breng/search/SearchResultSchema"
 
 import SEO from "@seo-default"
 

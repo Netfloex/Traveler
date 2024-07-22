@@ -3,9 +3,9 @@ import { Fetcher } from "swr"
 
 import { PlannerResult } from "./PlannerResultSchema"
 
-import { brengApi } from "@endpoints/brengApi"
-import { PlannerResultSchema } from "@endpoints/planner/PlannerResultSchema"
-import { LocationUnion } from "@endpoints/search/SearchResultSchema"
+import { brengApi } from "@endpoints/breng/brengApi"
+import { PlannerResultSchema } from "@endpoints/breng/planner/PlannerResultSchema"
+import { LocationUnion } from "@endpoints/breng/search/SearchResultSchema"
 
 export interface PlannerOptions {
 	date: DateTime

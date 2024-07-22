@@ -19,12 +19,12 @@ import Typography from "@mui/joy/Typography"
 import { ItineraryPanel } from "./ItineraryPanel"
 import { ItineraryTab } from "./ItineraryTab"
 
-import { PlannerOptions, planner } from "@endpoints/planner"
+import { PlannerOptions, planner } from "@endpoints/ns/planner"
 import {
 	Itinerary,
+	ItineraryLeg,
 	PlannerResult,
-} from "@endpoints/planner/PlannerResultSchema"
-import { LocationUnion } from "@endpoints/search/SearchResultSchema"
+} from "@endpoints/ns/planner/PlannerSchema"
 
 const UnmemoizedTravelPlan: FC<{
 	departure: LocationUnion
@@ -32,18 +32,19 @@ const UnmemoizedTravelPlan: FC<{
 }> = ({ departure, destination }) => {
 	const [date] = useState(DateTime.now())
 
-	const getPlannerOptions = useCallback<(date: DateTime) => PlannerOptions>(
-		(date) => ({
+	const getPlannerOptions = useCallback<(ctx?: string) => PlannerOptions>(
+		(ctx) => ({
 			date,
 			departure,
 			destination,
 		}),
-		[departure, destination],
+		[date, departure, destination],
 	)
 
 	const { data, error, isLoading, setSize, size } = useSWRInfinite(
 		(_, data: PlannerResult | undefined): PlannerOptions =>
-			getPlannerOptions(data ? data.metadata.nextDateTime : date),
+			getPlannerOptions(),
+		// data ? data.metadata.nextDateTime :
 		planner,
 		{
 			revalidateAll: false,
@@ -60,7 +61,11 @@ const UnmemoizedTravelPlan: FC<{
 		const lastData = data?.at(-1)
 		if (!lastData) return
 
-		preload(getPlannerOptions(lastData.metadata.nextDateTime), planner)
+		preload(
+			getPlannerOptions(),
+			// lastData.metadata.nextDateTime
+			planner,
+		)
 	}, [data, getPlannerOptions])
 
 	useEffect(() => {
@@ -70,7 +75,7 @@ const UnmemoizedTravelPlan: FC<{
 	const itineraries: Itinerary[] | undefined = useMemo(() => {
 		if (data)
 			return uniqBy(
-				data.flatMap((e) => e.plan.itineraries),
+				data.flatMap((e) => e.trips),
 				"id",
 			)
 	}, [data])
@@ -123,15 +128,7 @@ const UnmemoizedTravelPlan: FC<{
 				>
 					Later...
 					<Typography level="body2" marginLeft="auto" display="flex">
-						{isLoadingMore ? (
-							<CircularProgress size="sm" />
-						) : (
-							data
-								?.at(-1)
-								?.metadata.nextDateTime.toLocaleString(
-									DateTime.TIME_24_SIMPLE,
-								)
-						)}
+						{isLoadingMore && <CircularProgress size="sm" />}
 					</Typography>
 				</ListItemButton>
 			</TabList>
@@ -139,8 +136,6 @@ const UnmemoizedTravelPlan: FC<{
 				<ItineraryPanel
 					key={itinerary.id}
 					itinerary={itinerary}
-					departure={departure}
-					destination={destination}
 					i={i}
 				/>
 			))}

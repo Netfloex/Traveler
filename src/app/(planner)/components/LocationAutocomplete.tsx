@@ -30,8 +30,8 @@ import { locationToString } from "@utils/locationToString"
 
 import { TypeToIcon } from "./TypeToIcon"
 
-import { search } from "@endpoints/search"
-import { LocationUnion } from "@endpoints/search/SearchResultSchema"
+import { search } from "@endpoints/breng/search"
+import { LocationUnion } from "@endpoints/breng/search/SearchResultSchema"
 
 type OnChange = (
 	event: SyntheticEvent<Element, Event>,
